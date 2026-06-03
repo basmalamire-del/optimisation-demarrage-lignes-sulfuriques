@@ -118,29 +118,39 @@ hr {{border:0; border-top:1px solid #E7ECF2;}}
 
 @st.cache_data(show_spinner=False)
 def load_all():
-    try:
-        ancien = pd.read_excel(ANCIEN, sheet_name=None)
-        nouveau = pd.read_excel(NOUVEAU, sheet_name=None)
-        with open(RESULTATS, 'r', encoding='utf-8') as f:
-            opt = json.load(f)
-        for pack in (ancien, nouveau):
-            for k in pack:
-                pack[k].columns = [str(c).strip() for c in pack[k].columns]
-    except Exception:
-        opt = {'surchauffeur': {'Q_kW': 0.0, 'm_vap_kg_s': 0.0, 'T_air_out_C': 0.0, 'T_vap_out_C': 0.0, 'marge_cond_C': 0.0}}
-        return pd.DataFrame(), pd.DataFrame(), opt
+    ancien = pd.read_excel(ANCIEN, sheet_name=None, engine="openpyxl")
+    nouveau = pd.read_excel(NOUVEAU, sheet_name=None, engine="openpyxl")
+
+    with open(RESULTATS, "r", encoding="utf-8") as f:
+        opt = json.load(f)
+
+    for pack in (ancien, nouveau):
+        for k in pack:
+            pack[k].columns = [str(c).strip() for c in pack[k].columns]
+
     return ancien, nouveau, opt
 
-load_res = load_all()
-if isinstance(load_res[0], pd.DataFrame):
-    opt = load_res[2]
-    anc_m = anc_four = anc_gas = anc_kpi = anc_eco = pd.DataFrame()
-    new_m = pd.DataFrame({'Temps_h': [0.0], 'M1_C': [20.0], 'M2_C': [20.0], 'M3_C': [20.0], 'M4_C': [20.0]})
-    new_four = new_va = new_gas = new_kpi = new_eco = pd.DataFrame()
-else:
-    ancien, nouveau, opt = load_res
-    anc_m = ancien['02_Masses']; anc_four = ancien['03_Four']; anc_gas = ancien['04_Gasoil']; anc_kpi = ancien['05_KPI']; anc_eco = ancien.get('06_Economie', pd.DataFrame())
-    new_m = nouveau['02_Masses']; new_four = nouveau['03_Four']; new_va = nouveau['04_Vapeur_Air']; new_gas = nouveau['05_Gasoil']; new_kpi = nouveau['06_KPI']; new_eco = nouveau.get('07_Economie', pd.DataFrame())
+
+try:
+    ancien, nouveau, opt = load_all()
+
+    anc_m = ancien["02_Masses"]
+    anc_four = ancien["03_Four"]
+    anc_gas = ancien["04_Gasoil"]
+    anc_kpi = ancien["05_KPI"]
+    anc_eco = ancien.get("06_Economie", pd.DataFrame())
+
+    new_m = nouveau["02_Masses"]
+    new_four = nouveau["03_Four"]
+    new_va = nouveau["04_Vapeur_Air"]
+    new_gas = nouveau["05_Gasoil"]
+    new_kpi = nouveau["06_KPI"]
+    new_eco = nouveau.get("07_Economie", pd.DataFrame())
+
+except Exception as e:
+    st.error("Erreur de chargement des fichiers Excel ou JSON.")
+    st.exception(e)
+    st.stop()
 
 T_ARRET = 11 + 28/60
 T_TARGET = 120
