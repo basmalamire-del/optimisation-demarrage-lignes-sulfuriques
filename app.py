@@ -1121,6 +1121,119 @@ elif page == 'Température du Four':
         )
         
         st.plotly_chart(fig_pie, use_container_width=True)
+elif page == 'Vapeur & Air':
+    # 1. Rangée des indicateurs clés (KPIs)
+    c1, c2, c3, c4 = st.columns(4)
+    with c1: kpi('Débit air sec', '3.083', 'kg/s', 'sim')
+    with c2: kpi('Débit vapeur MP', '3.854852', 'kg/s', 'sim')
+    with c3: kpi('Arrêt des flux', '11 h 28 min', 'Objectif atteint', 'time')
+    with c4: kpi('Puissance Éco (13E03)', f"{opt['surchauffeur']['Q_kW']:.2f}", 'kW', 'elec')
+    
+    st.write('')
+    
+    # 2. Affichage des deux graphiques côte à côte
+    if not new_va.empty and 'Temps_vapeur_air_h' in new_va.columns:
+        va = new_va[new_va['Temps_vapeur_air_h'] <= T_ARRET].copy()
+        col_graphes_a, col_graphes_b = st.columns(2)
+        
+        with col_graphes_a:
+            st.plotly_chart(lines(va, 'Temps_vapeur_air_h', ['T_air_out_13E03_C', 'T_air_out_E02_C', 'T_air_out_E01_C'], 'Température air dans les échangeurs', '°C', x_range=[0, T_ARRET], height=400), use_container_width=True)
+            
+        with col_graphes_b:
+            st.plotly_chart(lines(va, 'Temps_vapeur_air_h', ['T_vap_out_13E03_C', 'T_vap_out_E02_C', 'T_vap_out_E01_C', 'T_sat_vapeur_C'], 'Température vapeur dans les échangeurs', '°C', x_range=[0, T_ARRET], height=400), use_container_width=True)
+            
+    st.write('')
+    
+    # 3. Nouveau Tableau dynamique des performances des échangeurs
+    st.markdown(f'<div class="small-title">{ICONS["sim"]} Performances thermiques des Échangeurs</div>', unsafe_allow_html=True)
+    
+    # Slider indépendant pour la page Vapeur & Air limité à T_ARRET (11.47h)
+    t_va = st.slider(
+        'Temps de circulation Vapeur & Air Sec (h)', 
+        0.0, 
+        float(T_ARRET), 
+        0.0, 
+        0.05, 
+        key='slider_independant_vapeur_air'
+    )
+    
+    # Extraction croisée des données
+    if not new_va.empty and not new_m.empty:
+        # Trouver la ligne correspondante dans la feuille 04_Vapeur_Air
+        idx_va = (new_va['Temps_vapeur_air_h'] - t_va).abs().idxmin()
+        row_va = new_va.loc[idx_va]
+        
+        # Trouver la ligne correspondante au même instant t dans la feuille globale/masses (02_Masses)
+        idx_m = (new_m['Temps_h'] - t_va).abs().idxmin()
+        row_m = new_m.loc[idx_m]
+        
+        st.write(f"**Analyse instantanée de l'échange thermique à t = {t_va:.2f} h :**")
+        
+        # ====================================================================
+        # LOGIQUE THERMODYNAMIQUE : COUPLAGE ÉCHANGEURS & MASSES (Efficacité 100%)
+        # ====================================================================
+        
+        # --- 13E03 (Économiseur) ---
+        t_air_in_13E03 = 53.0
+        t_air_out_13E03 = row_va['T_air_out_13E03_C']
+        gain_air_13E03 = t_air_out_13E03 - t_air_in_13E03
+        
+        # --- E02 (Surchauffeur 2) ---
+        # L'air entrant provient de la Masse 3 (colonne 'M3_C' de la feuille masses)
+        t_air_in_E02 = row_m['M3_C']
+        t_air_out_E02 = row_va['T_air_out_E02_C']
+        gain_air_E02 = t_air_out_E02 - t_air_in_E02
+        
+        # --- E01 (Surchauffeur 1) ---
+        # L'air entrant provient de la Masse 2 (colonne 'M2_C' de la feuille masses)
+        t_air_in_E01 = row_m['M2_C']
+        t_air_out_E01 = row_va['T_air_out_E01_C']
+        gain_air_E01 = t_air_out_E01 - t_air_in_E01
+        
+        # ====================================================================
+        # ÉVOLUTION THERMIQUE CÔTÉ VAPEUR (Série Vapeur MP)
+        # ====================================================================
+        t_vap_in_13E03 = 290.0
+        t_vap_out_13E03 = row_va['T_vap_out_13E03_C']
+        chute_vap_13E03 = t_vap_out_13E03 - t_vap_in_13E03
+        
+        t_vap_in_E02 = t_vap_out_13E03
+        t_vap_out_E02 = row_va['T_vap_out_E02_C']
+        chute_vap_E02 = t_vap_out_E02 - t_vap_in_E02
+        
+        t_vap_in_E01 = t_vap_out_E02
+        t_vap_out_E01 = row_va['T_vap_out_E01_C']
+        chute_vap_E01 = t_vap_out_E01 - t_vap_in_E01
+
+        # Structuration du tableau dynamique final
+        df_perf_dynamique = pd.DataFrame({
+            'Flux / Échangeur': [
+                '13E03 (Économiseur) - Côté Air', 
+                'E02 (Surchauffeur 2) - Côté Air', 
+                'E01 (Surchauffeur 1) - Côté Air',
+                '13E03 (Économiseur) - Côté Vapeur', 
+                'E02 (Surchauffeur 2) - Côté Vapeur', 
+                'E01 (Surchauffeur 1) - Côté Vapeur'
+            ],
+            'Température Entrée (°C)': [
+                f"{t_air_in_13E03:.1f}", f"{t_air_in_E02:.1f}", f"{t_air_in_E01:.1f}",
+                f"{t_vap_in_13E03:.1f}", f"{t_vap_in_E02:.1f}", f"{t_vap_in_E01:.1f}"
+            ],
+            'Température Sortie (°C)': [
+                f"{t_air_out_13E03:.1f}", f"{t_air_out_E02:.1f}", f"{t_air_out_E01:.1f}",
+                f"{t_vap_out_13E03:.1f}", f"{t_vap_out_E02:.1f}", f"{t_vap_out_E01:.1f}"
+            ],
+            'Évolution Thermique (ΔT)': [
+                f"+{gain_air_13E03:.1f} °C", f"+{gain_air_E02:.1f} °C", f"+{gain_air_E01:.1f} °C",
+                f"{chute_vap_13E03:.1f} °C", f"{chute_vap_E02:.1f} °C", f"{chute_vap_E01:.1f} °C"
+            ]
+        })
+        
+        st.dataframe(df_perf_dynamique, use_container_width=True, hide_index=True)
+        st.caption(f"💡 Vérification : À t = {t_va:.2f}h, T_entrée E02 = Masse 3 ({t_air_in_E02:.1f}°C) | T_entrée E01 = Masse 2 ({t_air_in_E01:.1f}°C).")
+    else:
+        st.warning("Données indisponibles dans new_m ou new_va.")
+
 elif page == 'Analyse énergétique':
 
     st.markdown(f"""
@@ -1402,7 +1515,7 @@ elif page == 'Analyse Économique':
     st.markdown(
         f"""
         <h2 style="color:{NAVY}; margin-bottom:4px;">
-            💰 Analyse économique — Nouveau procédé vs Ancien procédé
+            Analyse économique — Nouveau procédé vs Ancien procédé
         </h2>
         <p style="color:{MUTED}; font-size:15px;">
             Évaluation du gain économique direct lié à la réduction de la consommation de gasoil
