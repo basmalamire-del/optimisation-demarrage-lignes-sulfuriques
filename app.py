@@ -1088,49 +1088,6 @@ elif page == 'Température du Four':
 
     st.plotly_chart(fig_f, use_container_width=True)
 
-    # ====================================================================
-    # PARTIE 3 : BILAN NET DE LA CONSOMMATION (MIS À JOUR AVEC VALEURS CORRIGÉES)
-    # ====================================================================
-    st.markdown("---")
-    st.markdown(f'<div class="small-title">📊 Bilan Énergétique Global du Combustible Consommé</div>', unsafe_allow_html=True)
-    
-    c_pie_l, c_pie_c, c_pie_r = st.columns([1, 2, 1])
-    with c_pie_c:
-        # Données dynamiquement filtrées ou basées sur les constantes de consommations corrigées
-        if type_proc == "Ancien procédé":
-            labels_pie = ['Chauffage 1', 'Chauffage 2']
-            values_pie = [38.80, 31.20] # Remplacement des anciennes valeurs par les valeurs recalculées (Total = 70.00 m³)
-            colors_pie = ['#FF4B4B', '#B91C1C']
-        else:
-            labels_pie = ['Chauffage Vapeur MP', 'Chauffage 2']
-            values_pie = [9.96, 20.15]
-            colors_pie = ['#00E676', '#059669']
-
-        fig_pie = px.pie(
-            names=labels_pie, 
-            values=values_pie, 
-            hole=0.5, 
-            color_discrete_sequence=colors_pie
-        )
-        
-        # Structure de l'étiquette extérieure claire et sans chevauchements
-        fig_pie.update_traces(
-            texttemplate="<b>%{label}</b><br>%{value:.2f} m³<br>(%{percent})",
-            textposition='outside',
-            textfont=dict(family="Inter", size=12, color="#94A3B8"),
-            outsidetextfont=dict(family="Inter", size=12, color="#94A3B8")
-        )
-        
-        fig_pie.update_layout(
-            plot_bgcolor='white',
-            paper_bgcolor='white',
-            font=dict(color='#94A3B8', family="Inter"),
-            showlegend=False, 
-            margin=dict(t=50, b=50, l=50, r=50),
-            height=380
-        )
-        
-        st.plotly_chart(fig_pie, use_container_width=True)
 elif page == 'Vapeur & Air':
     # 1. Rangée des indicateurs clés (KPIs)
     c1, c2, c3, c4 = st.columns(4)
