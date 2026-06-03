@@ -505,7 +505,7 @@ if page == "Vue d'ensemble du procédé":
         ],
         "Valeur": [
             "14 m",
-            "16 m",
+            "16.4 m",
             "74.1 m³",
             "80.5 m³",
             "97.4 m³",
