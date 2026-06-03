@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-20 21:19:57",
+  "configuration": "MODE DÉMARRAGE (Économiseur INACTIF)",
+  "methode": "minimize_scalar (bounded) + Validation post-optimisation",
+  "surchauffeur": {
+    "m_vap_kg_s": 3.854852,
+    "m_calc_kg_s": 3.854852,
+    "erreur_kg_s": 0.0,
+    "erreur_pct": 0.0,
+    "Q_kW": 614.07,
+    "T_air_in_C": 53.0,
+    "T_air_out_C": 250.79,
+    "T_vap_in_C": 290.0,
+    "T_vap_out_C": 217.43,
+    "T_sat_C": 175.4,
+    "epsilon_pct": 83.46,
+    "NTU": 2.9416,
+    "C_r": 0.3669,
+    "marge_cond_C": 42.03
+  },
+  "validation": {
+    "condensation": false,
+    "converge": true,
+    "methode_optimisation": "minimize_scalar_bounded"
+  },
+  "convergence": {
+    "iterations": 38,
+    "historique_disponible": true
+  }
+}
