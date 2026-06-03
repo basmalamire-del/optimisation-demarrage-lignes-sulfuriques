@@ -486,15 +486,15 @@ if page == "Vue d'ensemble du procédé":
 
     with col_hypothese:
         st.markdown(f'<div class="small-title">{ICONS["sim"]} 🏭 Caractéristiques procédé</div>', unsafe_allow_html=True)
-            st.markdown(f"""
-    <div style="
-        background:{CARD};
-        border-radius:18px;
-        padding:18px 20px;
-        border:1px solid #E5E7EB;
-        box-shadow:0 8px 22px rgba(16,24,40,0.06);
-        min-height:260px;
-    ">
+        st.markdown(f"""
+        <div style="
+         background:{CARD};
+         border-radius:18px;
+         padding:18px 20px;
+         border:1px solid #E5E7EB;
+         box-shadow:0 8px 22px rgba(16,24,40,0.06);
+         min-height:260px;
+        ">
 
         <div style="
             font-size:14px;
