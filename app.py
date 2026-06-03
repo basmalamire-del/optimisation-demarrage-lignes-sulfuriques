@@ -555,14 +555,14 @@ if page == "Vue d'ensemble du procédé":
         <th>Valeur</th>
       </tr>
       <tr><td>Diamètre convertisseur</td><td>14 m</td></tr>
-      <tr><td>Hauteur convertisseur</td><td>16 m</td></tr>
+      <tr><td>Hauteur convertisseur</td><td>16.4 m</td></tr>
       <tr><td>Volume catalyseur M1</td><td>74.1 m³</td></tr>
       <tr><td>Volume catalyseur M2</td><td>80.5 m³</td></tr>
       <tr><td>Volume catalyseur M3</td><td>97.4 m³</td></tr>
       <tr><td>Volume catalyseur M4</td><td>108 m³</td></tr>
-      <tr><td>Surface 13E03<br><span style="color:{MUTED};font-size:11px;">serpentin vapeur supérieur</span></td><td>139 m²</td></tr>
-      <tr><td>Surface 13E02</td><td>142 m²</td></tr>
-      <tr><td>Surface 13E01</td><td>1250 m²</td></tr>
+      <tr><td>Surface d'échange 13E03<br><span style="color:{MUTED};font-size:11px;">serpentin vapeur supérieur</span></td><td>139 m²</td></tr>
+      <tr><td>Surface d'échange 13E02</td><td>142 m²</td></tr>
+      <tr><td>Surface d'échange 13E01</td><td>1250 m²</td></tr>
      </table>
      """
 
