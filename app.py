@@ -485,18 +485,96 @@ if page == "Vue d'ensemble du procédé":
         st.dataframe(df_calcul, use_container_width=True, hide_index=True)
 
     with col_hypothese:
-        st.markdown(f'<div class="small-title">{ICONS["sim"]} Hypothèses du modèle</div>', unsafe_allow_html=True)
-        st.markdown(f'''
-        <div class="card" style="padding: 12px; height: 215px; overflow-y: auto;">
-            <ul style="margin: 0; padding-left: 20px; color: {TEXT}; font-size: 13px; line-height: 1.6;">
-                <li>Échanges extérieurs négligeables</li>
-                <li>Rendement échangeurs = 100%</li>
-                <li>Pas de pertes thermiques sortie échangeurs</li>
-                <li>Cp considérés constants</li>
-                <li>Air sec uniforme</li>
-            </ul>
+        st.markdown(f'<div class="small-title">{ICONS["sim"]} 🏭 Caractéristiques procédé</div>', unsafe_allow_html=True)
+            st.markdown(f"""
+    <div style="
+        background:{CARD};
+        border-radius:18px;
+        padding:18px 20px;
+        border:1px solid #E5E7EB;
+        box-shadow:0 8px 22px rgba(16,24,40,0.06);
+        min-height:260px;
+    ">
+
+        <div style="
+            font-size:14px;
+            font-weight:800;
+            color:{NAVY};
+            margin-bottom:10px;
+            text-transform:uppercase;
+            letter-spacing:0.4px;
+        ">
+            Convertisseur cylindrique
         </div>
-        ''', unsafe_allow_html=True)
+
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+            <span style="color:{MUTED};font-weight:600;">Diamètre nominal</span>
+            <span style="font-weight:800;color:{TEXT};">14 m</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="color:{MUTED};font-weight:600;">Hauteur nominale</span>
+            <span style="font-weight:800;color:{TEXT};">16 m</span>
+        </div>
+
+        <div style="
+            font-size:14px;
+            font-weight:800;
+            color:{NAVY};
+            margin:14px 0 10px 0;
+            text-transform:uppercase;
+            letter-spacing:0.4px;
+        ">
+            Volume de vanadium par masse
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="background:#F8FAFC;border-radius:10px;padding:9px 10px;">
+                <div style="font-size:12px;color:{MUTED};font-weight:700;">Masse 1</div>
+                <div style="font-size:17px;font-weight:800;color:{OCP};">74.1 m³</div>
+            </div>
+            <div style="background:#F8FAFC;border-radius:10px;padding:9px 10px;">
+                <div style="font-size:12px;color:{MUTED};font-weight:700;">Masse 2</div>
+                <div style="font-size:17px;font-weight:800;color:{OCP};">80.5 m³</div>
+            </div>
+            <div style="background:#F8FAFC;border-radius:10px;padding:9px 10px;">
+                <div style="font-size:12px;color:{MUTED};font-weight:700;">Masse 3</div>
+                <div style="font-size:17px;font-weight:800;color:{OCP};">97.4 m³</div>
+            </div>
+            <div style="background:#F8FAFC;border-radius:10px;padding:9px 10px;">
+                <div style="font-size:12px;color:{MUTED};font-weight:700;">Masse 4</div>
+                <div style="font-size:17px;font-weight:800;color:{OCP};">108 m³</div>
+            </div>
+        </div>
+
+        <div style="
+            font-size:14px;
+            font-weight:800;
+            color:{NAVY};
+            margin:16px 0 10px 0;
+            text-transform:uppercase;
+            letter-spacing:0.4px;
+        ">
+            Surfaces d'échange thermique
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+            <span style="color:{MUTED};font-weight:600;">13E03 — serpentin surchauffeur</span>
+            <span style="font-weight:800;color:{TEXT};">139 m²</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+            <span style="color:{MUTED};font-weight:600;">13E02 — surchauffeur 2</span>
+            <span style="font-weight:800;color:{TEXT};">142 m²</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;">
+            <span style="color:{MUTED};font-weight:600;">13E01 — surchauffeur 1</span>
+            <span style="font-weight:800;color:{TEXT};">1250 m²</span>
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
 elif page == "Évolution des Masses":
     st.markdown(f"""
     <div style="
