@@ -1698,7 +1698,7 @@ elif page == 'Analyse Économique':
         ))
 
         fig_n.update_layout(
-            title="3. Nouveau procédé<br><span style='font-size:13px'>Total : 30.11 m³</span>",
+            title="3. Nouveau procédé<br><span style='font-size:13px'>Total : 41.58 m³</span>",
             height=390,
             margin=dict(l=10, r=10, t=60, b=20),
             paper_bgcolor="white",
