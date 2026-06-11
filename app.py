@@ -927,7 +927,7 @@ elif page == 'Température du Four':
             conso_cumulee = 0.00
 
         elif is_chauffage_2:
-            val_max_c1 = 9.96 if type_proc == "Nouvelle solution" else 38.80
+            val_max_c1 = 13.76 if type_proc == "Nouvelle solution" else 38.80
 
             row_g_actuelle = df_g_sim.iloc[(df_g_sim[col_t] - t_four).abs().argmin()]
             conso_cumulee = val_max_c1 + row_g_actuelle["Conso_gasoil_cumulee_phase_m3"]
@@ -1572,7 +1572,7 @@ elif page == 'Analyse Économique':
     with c2:
         kpi("Gasoil économisé", f"{gasoil_gain:.2f}", "m³ / démarrage", "gasoil")
     with c3:
-        kpi("Gain temps", "25 h 21 min", "par démarrage", "time")
+        kpi("Gain temps", "30 h 06 min", "par démarrage", "time")
     with c4:
         kpi("H₂SO₄ récupéré", f"{gain_h2so4:.2f}", "TMH / démarrage", "h2so4")
     with c5:
