@@ -444,13 +444,13 @@ if page == "Vue d'ensemble du procédé":
 
     k1, k2, k3, k4 = st.columns(4)
     with k1:
-        kpi("Gain temps", "25 h 21 min", "par démarrage", "time")
+        kpi("Gain temps", "30 h 06 min", "par démarrage", "time")
     with k2:
-        kpi("Gasoil économisé", "39.89", "m³ / démarrage", "gasoil")
+        kpi("Gasoil économisé", "28.42", "m³ / démarrage", "gasoil")
     with k3:
-        kpi("Gain économique", "579 506,36", "DH / démarrage", "gasoil")
+        kpi("Gain économique", "412 874,68", "DH / démarrage", "gasoil")
     with k4:
-        kpi("Électricité", "357.36", "MWh équivalent", "elec")
+        kpi("Électricité", "424.35", "MWh équivalent", "elec")
 
     st.markdown("<br>", unsafe_allow_html=True)
     # Remise en place de la version d'origine (simple, autonome et sans clé partagée)
@@ -1289,9 +1289,9 @@ elif page == 'Analyse énergétique':
     ancien_ch2 = 31.20
     ancien_total = 70.00
 
-    nouveau_ch1 = 9.96
-    nouveau_ch2 = 20.15
-    nouveau_total = 30.11
+    nouveau_ch1 = 13.76
+    nouveau_ch2 = 27.82
+    nouveau_total = 41.58
 
     economie = ancien_total - nouveau_total
     reduction = round(economie / ancien_total * 100, 2)
@@ -1530,19 +1530,19 @@ elif page == 'Analyse Économique':
     prix_gasoil_litre = 14.52761
 
     gasoil_ancien_total = 70.00
-    gasoil_nouveau_total = 30.11
+    gasoil_nouveau_total = 41.58
     gasoil_gain = gasoil_ancien_total - gasoil_nouveau_total
 
     ancien_ch1 = 38.80
     ancien_ch2 = 31.20
 
-    nouveau_ch1 = 9.96
-    nouveau_ch2 = 20.15
+    nouveau_ch1 = 13.76
+    nouveau_ch2 = 27.82
 
-    gain_h2so4 = 1848.44
-    gain_p2o5 = 606.05
-    gain_vhp = 2144.19
-    gain_mwh = 357.36
+    gain_h2so4 = 2194.89
+    gain_p2o5 = 719.64
+    gain_vhp = 2546.07
+    gain_mwh = 424.35
 
     cout_ancien = gasoil_ancien_total * 1000 * prix_gasoil_litre
     cout_nouveau = gasoil_nouveau_total * 1000 * prix_gasoil_litre
