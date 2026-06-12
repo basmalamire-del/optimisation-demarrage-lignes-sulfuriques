@@ -1387,7 +1387,16 @@ elif page == 'Analyse énergétique':
             xaxis_title="Temps (h)",
             yaxis_title="Consommation active (m³)",
             margin=dict(l=45, r=20, t=45, b=45),
-            font=dict(family="Inter", color=TEXT)
+            font=dict(family="Inter", color=TEXT),
+            xaxis=dict(
+            range=[0, 75],
+            dtick=20
+            ),
+
+            yaxis=dict(
+            range=[0, 40],
+            dtick=10
+            )
         )
 
         st.plotly_chart(fig_new_energy, use_container_width=True)
